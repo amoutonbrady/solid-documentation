@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="{{ it.logo }}" type="image/png" />
+    <title>Solid Documentation</title>
+    <meta name="description" content="Solid documentation" />
+    {{ it.css | safe }}
+  </head>
+  <body
+    class="relative flex h-screen overflow-hidden text-gray-100 bg-gray-800"
+  >
+    <aside class="flex flex-col h-full p-6 px-20 bg-gray-900 shadow">
+      <img src="{{ it.textLogo }}" alt="Solid Logo" class="block w-24" />
+      <nav class="mt-6">
+        <ul class="flex flex-col space-y-2">
+          {{ @each (it.sections) => section }}
+          <li>
+            <a href="#{{ section.id }}" class="hover:text-blue-400"
+              >{{ section.title }}</a
+            >
+          </li>
+          {{/each}}
+        </ul>
+      </nav>
+
+      <a
+        href="https://github.com/ryansolid/solid"
+        class="w-10 mx-auto mt-auto hover:text-blue-400"
+      >
+        <span class="sr-only">Check it out on github</span>
+        <svg class="w-full fill-current" viewBox="0 0 24 24">
+          <path
+            d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z"
+          />
+        </svg>
+      </a>
+    </aside>
+    <main
+      class="flex-1 h-full p-6 space-y-6 overflow-auto prose max-w-none"
+      style="scroll-behavior: smooth;"
+    >
+      <h1 class="max-w-3xl mx-auto">Solid-js documentation</h1>
+
+      {{ @each(it.sections) => section }}
+      <section class="max-w-3xl mx-auto" id="{{ section.id }}">
+        {{ section.content | safe }}
+      </section>
+      {{/each}}
+    </main>
+
+    <script>
+      const root = document.querySelector("main");
+      const sections = root.querySelectorAll("section");
+      const links = Array.from(document.querySelectorAll("aside nav a"));
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const { isIntersecting, target } of entries) {
+            if (!target.id) continue;
+            const link = links.find((l) => l.href.includes(target.id));
+            const method = isIntersecting ? "add" : "remove";
+            link.classList[method]("underline");
+            link.classList[method]("text-blue-400");
+          }
+        },
+        { root }
+      );
+
+      for (const section of sections) observer.observe(section);
+    </script>
+  </body>
+</html>
