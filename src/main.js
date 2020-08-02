@@ -83,7 +83,7 @@ async function main() {
     })
   );
   const end = performance.now();
-  console.log(`Everything generated ${Math.round(end - start) / 1000}ms ✔️`);
+  console.log(`Everything generated ${Math.round(end - start) / 1000}s ✔️`);
 }
 
 function unslugify(slug) {

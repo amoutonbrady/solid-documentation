@@ -11,7 +11,9 @@
   <body
     class="relative flex h-screen overflow-hidden text-gray-100 bg-gray-800"
   >
-    <aside class="flex flex-col h-full p-6 px-20 bg-gray-900 shadow">
+    <aside
+      class="absolute top-0 left-0 z-10 flex flex-col h-full p-6 px-20 transition-all duration-300 transform -translate-x-full bg-gray-900 shadow sm:relative sm:translate-x-0"
+    >
       <img src="{{ it.textLogo }}" alt="Solid Logo" class="block w-24" />
       <nav class="mt-6">
         <ul class="flex flex-col space-y-2">
@@ -38,22 +40,50 @@
       </a>
     </aside>
     <main
-      class="flex-1 h-full p-6 space-y-6 overflow-auto prose max-w-none"
+      class="flex-1 h-full space-y-6 overflow-auto"
       style="scroll-behavior: smooth;"
     >
-      <h1 class="max-w-3xl mx-auto">Solid-js documentation</h1>
+      <h1 class="sticky top-0 py-4 text-2xl font-bold bg-gray-900">
+        <span class="block max-w-3xl mx-auto">
+          Solid-js documentation
+        </span>
+      </h1>
 
       {{ @each(it.sections) => section }}
-      <section class="max-w-3xl mx-auto" id="{{ section.id }}">
+      <section class="max-w-3xl p-6 mx-auto prose" id="{{ section.id }}">
         {{ section.content | safe }}
       </section>
       {{/each}}
     </main>
 
+    <button
+      type="button"
+      class="absolute z-20 p-2 text-gray-700 bg-gray-300 rounded shadow-md sm:hidden bottom-10 right-10"
+    >
+      <span class="sr-only">Toggle the sidebar</span>
+      <svg
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        class="w-8"
+      >
+        <path d="M4 6h16M4 12h8m-8 6h16"></path>
+      </svg>
+    </button>
+
     <script>
       const root = document.querySelector("main");
       const sections = root.querySelectorAll("section");
+      const sidebar = document.querySelector("aside");
+      const toggle = document.querySelector("button");
       const links = Array.from(document.querySelectorAll("aside nav a"));
+
+      toggle.addEventListener("click", () => {
+        sidebar.classList.toggle("-translate-x-full");
+      });
 
       const observer = new IntersectionObserver(
         (entries) => {

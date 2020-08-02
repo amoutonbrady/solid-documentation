@@ -1,5 +1,13 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 
+const round = (num) =>
+  num
+    .toFixed(7)
+    .replace(/(\.[0-9]+?)0+$/, "$1")
+    .replace(/\.0$/, "");
+const rem = (px) => `${round(px / 16)}rem`;
+const em = (px, base) => `${round(px / base)}em`;
+
 module.exports = {
   purge: ["src/template.html"],
   theme: {
@@ -32,6 +40,10 @@ module.exports = {
           },
           h1: {
             color: defaultTheme.colors.gray[100],
+            fontSize: em(24, 16),
+            marginTop: em(48, 24),
+            marginBottom: em(24, 24),
+            lineHeight: round(32 / 24),
           },
           h2: {
             color: defaultTheme.colors.gray[100],
